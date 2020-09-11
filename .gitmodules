@@ -1,0 +1,3 @@
+[submodule "quxpy"]
+	path = quxpy
+	url = git@github.com:Qux/quxpy.git
