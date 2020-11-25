@@ -6,7 +6,8 @@ import config
 import get_array
 import time
 interval = 0.2
-i = 0
+pixel_x = 0
+pixel_y = 0
 
 # open an edge image
 image_filenames = ['laplacian.jpg', 'canny.jpg', 'sobel.jpg']
@@ -20,10 +21,10 @@ osc_sender.send("/foo", 0.1, 0.2)
 def send_int():
     """
     画像のある列を選び、画素値の配列を得る。
-    それがしきい値以上ならNOTE_ON、それ以下ならNOTE_OFFをvelocityとして送る。
+    それがしきい値以上ならそのままを、それ以下ならNOTE_OFFをvelocityとして送る。
     """
-    global i
-    raw_number = 500 # TODO to be changed to a variable
+    global pixel_x
+    global pixel_y
     TH_NOTE = 34
     STAT_ON = 144
     STAT_OFF = 128
@@ -31,7 +32,7 @@ def send_int():
     VELO_NOTE_ON = 80 # 適当なvelocity
     VELO_NOTE_OFF = 0
     # get buffer
-    velo_int = get_array.get_beat_int(get_array.get_row_array(img, raw_number), i)
+    velo_int = get_array.get_beat_int(get_array.get_row_array(img, pixel_y), pixel_x)
 
     # normalize the int
     velo_int = velo_int >> 1
@@ -46,10 +47,10 @@ def send_int():
         stat_int = STAT_OFF
         velo_int = VELO_NOTE_OFF
 
-    i = (i + 1) % config.l_img
-
     osc_sender.send("/velo", velo_int)
     osc_sender.send("/stat", stat_int) # stat should be send at last
+
+    pixel_x = (pixel_x + 1) % config.l_img
 
 metro.add(send_int, interval)
 # send messege
