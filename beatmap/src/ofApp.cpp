@@ -128,9 +128,9 @@ void ofApp::oscSendOnePixel(){
         row_number = (row_number + 1) % image_height;
     }
     
-    /// ピクセルの値取得を確認 ///
-    std::cout << std::to_string(pixel_array[i]) + ",";
-    std::cout << std::to_string(i) << std::endl;
+//    /// ピクセルの値取得を確認 ///
+//    std::cout << std::to_string(pixel_array[i]) + ",";
+//    std::cout << std::to_string(i) << std::endl;
     
     /// OSC送信 ///
     if (pixel_array[i] >= TH_ONOFF) { // 200はnote on/off判定のしきい値。いまは適当。
